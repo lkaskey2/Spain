@@ -1,0 +1,564 @@
+<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Madrid & Day Trips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="font-link" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="app-style">
+  :root {
+    --paper: #F2EEE3; --paper-raised: #FAF8F1; --ink: #1E2B3C; --ink-soft: #56626F;
+    --gold: #A6791F; --gold-soft: #EFE2C4; --teal: #33685D; --teal-soft: #DCEAE5;
+    --line: #D9D2BE; --danger: #A6432F; --tentative: #B5651D; --tentative-soft: #F1DDC0;
+    --radius: 3px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #1A2029; --paper-raised: #232B37; --ink: #EDE9DD; --ink-soft: #A3ABB6;
+      --gold: #D9B15C; --gold-soft: #3A3220; --teal: #7FBDAE; --teal-soft: #1F3733;
+      --line: #3A4250; --danger: #D98267; --tentative: #E3A45C; --tentative-soft: #3A2C18;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #1A2029; --paper-raised: #232B37; --ink: #EDE9DD; --ink-soft: #A3ABB6;
+    --gold: #D9B15C; --gold-soft: #3A3220; --teal: #7FBDAE; --teal-soft: #1F3733;
+    --line: #3A4250; --danger: #D98267; --tentative: #E3A45C; --tentative-soft: #3A2C18;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 28px 20px 60px; }
+  .title-row { display: flex; align-items: center; gap: 12px; }
+  .es-flag { width: 42px; height: 28px; flex-shrink: 0; border-radius: 2px; box-shadow: 0 0 0 1px var(--line); }
+  h1 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 30px; margin: 0; letter-spacing: -0.01em; text-wrap: balance; flex: 1; }
+  .sub { color: var(--ink-soft); font-size: 13px; margin: 4px 0 22px; }
+
+  .edit-toggle { font-family: inherit; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; flex-shrink: 0; }
+  .edit-toggle[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .banner { font-size: 12.5px; color: var(--tentative); background: var(--tentative-soft); border-radius: var(--radius); padding: 8px 11px; margin: -10px 0 18px; }
+
+  .summary { display: flex; flex-wrap: wrap; gap: 14px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 20px; }
+  .summary .stat { flex: 1; min-width: 68px; }
+  .summary .n { font-family: 'Fraunces', Georgia, serif; font-size: 22px; font-weight: 500; display: block; font-variant-numeric: tabular-nums; }
+  .summary .l { font-size: 11.5px; color: var(--ink-soft); }
+
+  .tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--line); margin-bottom: 22px; overflow-x: auto; scrollbar-width: none; }
+  .tab { background: none; border: none; border-bottom: 2px solid transparent; font-family: 'Fraunces', Georgia, serif; font-size: 16px; color: var(--ink-soft); padding: 0 0 11px; cursor: pointer; white-space: nowrap; }
+  .tab.active { color: var(--ink); border-bottom-color: var(--ink); font-weight: 600; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+  .chip { font-size: 13px; padding: 6px 13px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink-soft); cursor: pointer; font-family: inherit; }
+  .chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .group-label { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-family: 'Fraunces', Georgia, serif; font-size: 15px; font-style: italic; color: var(--ink-soft); margin: 26px 0 10px; }
+  .group-label:first-child { margin-top: 0; }
+
+  .card { display: flex; background: var(--paper-raised); border: 1px solid var(--line); border-left: 3px solid transparent; border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+  .card.flight { border-left-color: var(--teal); }
+  .stub { width: 66px; flex-shrink: 0; padding: 14px 8px; text-align: center; border-right: 1px dashed var(--line); }
+  .stub .dow { font-size: 10.5px; color: var(--ink-soft); letter-spacing: 0.06em; text-transform: uppercase; }
+  .stub .day { font-family: 'Fraunces', Georgia, serif; font-size: 24px; font-weight: 600; line-height: 1.1; }
+  .stub .mon { font-size: 11px; color: var(--ink-soft); letter-spacing: 0.03em; }
+  .body { flex: 1; padding: 12px 14px; min-width: 0; }
+  .row1 { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .title { font-weight: 600; font-size: 15.5px; }
+  .type-tag { font-size: 10.5px; padding: 2px 7px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+  .type-flight { background: var(--teal-soft); color: var(--teal); }
+  .type-travel { background: var(--gold-soft); color: var(--gold); }
+  .type-explore { background: var(--line); color: var(--ink-soft); }
+  .type-daytrip { background: transparent; border: 1px solid var(--ink-soft); color: var(--ink-soft); }
+  .meta { color: var(--ink-soft); font-size: 12.5px; margin-top: 4px; }
+  .sched { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+  .sched li { display: grid; grid-template-columns: 64px 1fr; gap: 8px; font-size: 13px; line-height: 1.45; }
+  .sched .t { color: var(--ink-soft); font-variant-numeric: tabular-nums; font-size: 12px; padding-top: 1px; }
+  .flags { display: flex; gap: 6px; margin-top: 9px; flex-wrap: wrap; }
+  .flag { font-size: 11px; padding: 2px 7px; border-radius: var(--radius); border: 1px solid var(--line); color: var(--ink-soft); }
+  .flag.book { border-color: var(--tentative); color: var(--tentative); background: var(--tentative-soft); }
+  .flag.ok { border-color: var(--teal); color: var(--teal); }
+  .flag.free { border-color: var(--teal); color: var(--teal); background: var(--teal-soft); }
+  .flight-box { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; margin-top: 10px; padding: 10px 0 2px; border-top: 1px dashed var(--line); }
+  .flight-box .big { white-space: nowrap; font-family: 'Fraunces', Georgia, serif; font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .flight-box .code { font-size: 11.5px; color: var(--ink-soft); letter-spacing: 0.05em; }
+  .flight-box .r { text-align: right; }
+  .flight-box .mid { font-size: 11px; color: var(--ink-soft); text-align: center; }
+
+  .item { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-raised); padding: 12px 14px; margin-bottom: 9px; }
+  .item-head { display: flex; justify-content: space-between; gap: 10px; font-size: 14.5px; font-weight: 600; }
+  .item-head .when { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 13px; color: var(--ink-soft); text-align: right; }
+  .item-sub { color: var(--ink-soft); font-size: 12.5px; margin-top: 4px; line-height: 1.45; }
+  .note { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; margin: 18px 0 0; }
+  .empty { color: var(--ink-soft); font-size: 13px; padding: 20px 0; }
+
+  .edit-bar { display: none; gap: 8px; margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--line); }
+  .editing .edit-bar { display: flex; }
+  .mini { font-family: inherit; font-size: 12.5px; padding: 5px 11px; border-radius: var(--radius); border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+  .mini.danger { color: var(--danger); border-color: var(--danger); }
+  .add-btn { display: none; font-family: 'Inter', sans-serif; font-style: normal; font-size: 12.5px; padding: 4px 10px; border-radius: 999px; border: 1px dashed var(--ink-soft); background: transparent; color: var(--ink); cursor: pointer; white-space: nowrap; }
+  .editing .add-btn { display: inline-block; }
+  .page-tools { display: none; gap: 8px; margin-top: 26px; padding-top: 14px; border-top: 1px solid var(--line); flex-wrap: wrap; align-items: center; }
+  .editing .page-tools { display: flex; }
+  .page-tools span { font-size: 12px; color: var(--ink-soft); margin-right: auto; }
+
+  .sheet-bg { position: fixed; inset: 0; background: rgba(15,20,28,0.45); display: none; align-items: flex-end; justify-content: center; z-index: 10; }
+  .sheet-bg.open { display: flex; }
+  .sheet { background: var(--paper); width: 100%; max-width: 640px; max-height: 88vh; overflow-y: auto; border-radius: 14px 14px 0 0; padding: 22px 20px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  .sheet h2 { font-family: 'Fraunces', Georgia, serif; font-size: 21px; margin: 0 0 14px; font-weight: 600; }
+  .field { display: grid; gap: 5px; margin-bottom: 12px; }
+  .field label { font-size: 12.5px; color: var(--ink-soft); }
+  .field .hint { font-size: 11.5px; color: var(--ink-soft); }
+  .field input, .field textarea, .field select { width: 100%; padding: 10px 11px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-raised); color: var(--ink); font-family: inherit; font-size: 15px; }
+  .field textarea { resize: vertical; min-height: 80px; line-height: 1.45; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .btn { flex: 1; padding: 12px; border-radius: var(--radius); border: none; font-family: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer; }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--ink-soft); flex: 0 0 auto; padding: 12px 18px; }
+  .btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); flex: 0 0 auto; padding: 12px 18px; }
+  .confirm { display: none; font-size: 13px; color: var(--danger); margin-top: 12px; }
+  .confirm.show { display: block; }
+  .saving { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--paper); font-size: 13px; padding: 8px 14px; border-radius: 999px; z-index: 20; }
+</style>
+
+<div class="wrap" id="app-root">
+  <div class="title-row">
+    <svg class="es-flag" viewBox="0 0 750 500" role="img" aria-label="Flag of Spain"><rect width="750" height="500" fill="#AA151B"/><rect y="125" width="750" height="250" fill="#F1BF00"/></svg>
+    <h1>Madrid &amp; Day Trips</h1>
+    <button class="edit-toggle" id="editToggle" aria-pressed="false">Edit</button>
+  </div>
+  <div class="sub">Madrid and day trips by train — Sep 30 to Oct 11, 2026</div>
+  <div id="banner"></div>
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div id="panel"></div>
+</div>
+
+<div class="sheet-bg" id="sheetBg">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <h2 id="sheetTitle">Edit</h2>
+    <form id="sheetForm"></form>
+  </div>
+</div>
+
+<script type="application/json" id="plan-data">
+{
+  "pages": [
+    {"id":"days","label":"Days","kind":"days"},
+    {"id":"todo","label":"Things to do","kind":"list"},
+    {"id":"facts","label":"Interesting facts","kind":"list"},
+    {"id":"free","label":"Free hours & tips","kind":"list"}
+  ],
+  "days": [
+    {"id":"d0930","dow":"Wed","d":"30","m":"SEP","type":"flight","title":"Fly Miami → Madrid","meta":"Overnight",
+     "flight":{"from":"MIA","fromT":"9:30 PM","to":"MAD","toT":"12:05 PM","note":"UX0098 · lands Thu 1 Oct"},
+     "sched":[["6:30 PM","Arrive MIA for international check-in"],["9:30 PM","Depart on Air Europa UX0098"]],"flags":[["ok","Booked"]]},
+    {"id":"d1001","dow":"Thu","d":"1","m":"OCT","type":"travel","title":"Arrive, Retiro & Debod","meta":"Metro Line 8 or a taxi from the airport",
+     "sched":[["12:05 PM","Land MAD, Metro into the city (airport supplement applies)"],["5:00 PM","Retiro Park and the Crystal Palace (free)"],["7:30 PM","Sunset at the Templo de Debod, a real Egyptian temple (free)"],["9:00 PM","Bocadillo de calamares near Plaza Mayor (~$6)"]],"flags":[["free","All free today"]]},
+    {"id":"d1002","dow":"Fri","d":"2","m":"OCT","type":"explore","title":"Old Madrid & free Prado","meta":"Walking day",
+     "sched":[["10:00 AM","Tip-based walking tour: Sol, Plaza Mayor, Royal Palace outside, Almudena"],["1:30 PM","Menú del día lunch — 3 courses with a drink (~$16)"],["3:30 PM","San Antonio de la Florida: Goya's ceiling frescoes and his tomb (free)"],["6:00 PM","Prado Museum, free last 2 hours (6–8 PM)"],["9:00 PM","Tapas on Cava Baja, La Latina"]],"flags":[["free","Prado free 6–8 PM"]]},
+    {"id":"d1003","dow":"Sat","d":"3","m":"OCT","type":"daytrip","title":"Toledo","meta":"Avant train from Atocha · 33 min · $14–18 each way",
+     "sched":[["9:20 AM","Train to Toledo — book ahead, Saturdays sell out"],["10:15 AM","Walk up via the escalators; Cathedral, Jewish Quarter, Synagogue of Santa María la Blanca"],["2:00 PM","Lunch — carcamusas (local pork stew)"],["4:30 PM","Mirador del Valle for the classic skyline"],["7:30 PM","Train back"]],"flags":[["book","Avant train"]]},
+    {"id":"d1004","dow":"Sun","d":"4","m":"OCT","type":"explore","title":"El Rastro & Reina Sofía","meta":"Madrid's Sunday",
+     "sched":[["9:30 AM","El Rastro flea market, La Latina (Sundays only)"],["12:30 PM","Reina Sofía, free 12:30–2:30 PM — Picasso's Guernica"],["3:00 PM","Vermouth and tapas in Lavapiés"],["5:00 PM","Walk or cycle Madrid Río park along the river (free)"]],"flags":[["free","Reina Sofía free 12:30–2:30 PM"]]},
+    {"id":"d1005","dow":"Mon","d":"5","m":"OCT","type":"explore","title":"Thyssen & Malasaña","meta":"Free Monday at the Thyssen",
+     "sched":[["10:00 AM","Mercado de San Fernando in Lavapiés — market stalls and tapas bars"],["12:00 PM","Thyssen-Bornemisza, free Mondays 12–4 PM"],["4:30 PM","Gran Vía and the Metropolis building"],["7:00 PM","Malasaña and Conde Duque — bars, vintage shops"]],"flags":[["free","Thyssen free 12–4 PM"]]},
+    {"id":"d1006","dow":"Tue","d":"6","m":"OCT","type":"daytrip","title":"Segovia","meta":"AVE from Chamartín · about 30 min · $14–16 each way",
+     "sched":[["9:00 AM","Train to Segovia–Guiomar, then local bus to the aqueduct"],["10:15 AM","Roman aqueduct (free to see)"],["11:30 AM","Cathedral and the Alcázar castle (paid, modest fee)"],["2:00 PM","Lunch — try cochinillo, Segovia's famous roast suckling pig"],["6:00 PM","Train back"]],"flags":[["book","AVE train"]]},
+    {"id":"d1007","dow":"Wed","d":"7","m":"OCT","type":"daytrip","title":"Alcalá de Henares","meta":"Cercanías C-2 · about 40 min · $3–5",
+     "sched":[["10:00 AM","Cercanías to Alcalá — no booking needed"],["11:00 AM","Cervantes' Birthplace Museum (free)"],["12:30 PM","Old university and the arcaded Calle Mayor"],["2:00 PM","Order a drink and get a big free tapa, a local tradition"],["7:00 PM","Back in Madrid — Reina Sofía free again 7–9 PM if you want more"]],"flags":[["free","Birthplace museum free"]]},
+    {"id":"d1008","dow":"Thu","d":"8","m":"OCT","type":"daytrip","title":"El Escorial","meta":"Cercanías C-3/C-8 · about 1 hr · $5–6",
+     "sched":[["9:30 AM","Cercanías to El Escorial"],["11:00 AM","Royal Monastery: royal tombs, library, Habsburg rooms (paid)"],["2:00 PM","Lunch in town"],["3:30 PM","Walk the monastery gardens and the Casita del Príncipe grounds"],["6:00 PM","Back to Madrid"]],"flags":[]},
+    {"id":"d1009","dow":"Fri","d":"9","m":"OCT","type":"explore","title":"Unique Madrid","meta":"Off-list sights",
+     "sched":[["10:00 AM","National Archaeological Museum — Lady of Elche, replica Altamira cave"],["1:00 PM","Menú del día"],["3:00 PM","Chamberí ghost Metro station, a preserved 1919 stop (small fee)"],["5:00 PM","CaixaForum and its vertical garden"],["7:00 PM","Círculo de Bellas Artes rooftop at sunset (small fee)"]],"flags":[]},
+    {"id":"d1010","dow":"Sat","d":"10","m":"OCT","type":"daytrip","title":"Ávila","meta":"Regional train · 1.5–2 hrs · $10–17 each way",
+     "sched":[["9:00 AM","Train to Ávila"],["11:00 AM","Walk the 11th-century city walls — the most complete in Spain"],["1:30 PM","Lunch; try yemas de Santa Teresa (egg-yolk sweets)"],["3:00 PM","Cathedral and Four Posts viewpoint (free)"],["6:00 PM","Train back; farewell dinner in La Latina"]],"flags":[["book","Regional train"]]},
+    {"id":"d1011","dow":"Sun","d":"11","m":"OCT","type":"flight","title":"Fly Madrid → Miami","meta":"Home the same evening",
+     "flight":{"from":"MAD","fromT":"3:25 PM","to":"MIA","toT":"6:45 PM","note":"UX0097"},
+     "sched":[["9:30 AM","Last look at El Rastro or a walk in Retiro"],["12:15 PM","Metro to MAD Terminal 1"],["3:25 PM","Depart on Air Europa UX0097"]],"flags":[["ok","Booked"]]}
+  ],
+  "lists": {
+    "todo": [
+      {"id":"g-mus","label":"Museums","items":[
+        {"id":"t1","name":"Prado","when":"Free Mon–Sat 6–8 PM, Sun 5–7 PM","desc":"Spain's national art museum and one of the world's great collections of European painting. Highlights are Velázquez's Las Meninas, Goya's Black Paintings and Bosch's Garden of Earthly Delights."},
+        {"id":"t2","name":"Reina Sofía","when":"Free Mon, Wed–Sat 7–9 PM, Sun 12:30–2:30 PM","desc":"Modern and 20th-century Spanish art in a former hospital. Picasso's Guernica is the centrepiece, alongside Dalí and Miró. Closed Tuesdays."},
+        {"id":"t3","name":"Thyssen-Bornemisza","when":"Free Mon 12–4 PM, Sat 9–11 PM","desc":"A private collection that fills gaps the Prado lacks, from Italian primitives through the Impressionists to Pop Art. Smaller and easy to see in a few hours."}]},
+      {"id":"g-sights","label":"Free Madrid sights","items":[
+        {"id":"t4","name":"Templo de Debod","when":"Free","desc":"A 2,200-year-old Egyptian temple, gifted to Spain in 1968 and rebuilt on a hill near the Royal Palace. The city's best sunset spot."},
+        {"id":"t5","name":"San Antonio de la Florida","when":"Free","desc":"A small chapel whose dome Goya painted in 1798 with lively crowd scenes. He is also buried there."},
+        {"id":"t6","name":"Retiro Park","when":"Free","desc":"Madrid's central park, with a rowing lake, rose garden and the glass-and-iron Crystal Palace, which hosts free exhibitions."},
+        {"id":"t7","name":"Madrid Río","when":"Free","desc":"A long riverside park built over a buried highway, with bike paths, bridges and playgrounds."},
+        {"id":"t8","name":"El Rastro","when":"Sundays, morning","desc":"A huge open-air flea market in La Latina. Stalls sell antiques, clothes and odds and ends; the bars around it fill up by noon."}]},
+      {"id":"g-trips","label":"Day trips","items":[
+        {"id":"t9","name":"Toledo","when":"Avant · 33 min · $14–18","desc":"Spain's former capital on a hilltop wrapped by a river, once home to Christian, Jewish and Muslim communities. Gothic cathedral, old synagogues and El Greco paintings."},
+        {"id":"t10","name":"Segovia","when":"AVE · ~30 min · $14–16","desc":"Known for its 2,000-year-old Roman aqueduct, built without mortar. Also a fairy-tale Alcázar castle and roast suckling pig."},
+        {"id":"t11","name":"Alcalá de Henares","when":"C-2 · ~40 min · $3–5","desc":"Cervantes' birthplace and home to one of Europe's oldest universities. A UNESCO site with an arcaded main street and generous free tapas."},
+        {"id":"t12","name":"El Escorial","when":"C-3/C-8 · ~1 hr · $5–6","desc":"A vast 16th-century monastery-palace built by Philip II in the mountains. It holds the royal tombs and a spectacular painted library."},
+        {"id":"t13","name":"Ávila","when":"Regional · 1.5–2 hrs · $10–17","desc":"A walled medieval city whose 11th-century walls, with 88 towers, are almost fully intact and walkable. Hometown of St. Teresa."}]},
+      {"id":"g-act","label":"Active in Madrid","items":[
+        {"id":"t14","name":"Retiro rowing boats","when":"Small fee","desc":"Rent a rowboat on the Estanque Grande. Go early to avoid the weekend line."},
+        {"id":"t15","name":"Madrid Río by bike","when":"BiciMAD app","desc":"Rent a public e-bike and ride the flat riverside path, then continue into Casa de Campo."},
+        {"id":"t16","name":"Casa de Campo","when":"Free · cable car extra","desc":"Madrid's largest park, with running and mountain-bike trails. Ride the Teleférico one way from near Templo de Debod."},
+        {"id":"t17","name":"Padel","when":"Book on Playtomic","desc":"Spain's favorite sport — easy to pick up and fun for all levels. The app finds courts and people to play with."},
+        {"id":"t18","name":"Free walking tours","when":"Tip-based · 2–3 hrs","desc":"Guided walks through Sol, Plaza Mayor and the old town, on foot the whole way."}]},
+      {"id":"g-near","label":"Active nearby","items":[
+        {"id":"t19","name":"Sierra de Guadarrama hiking","when":"C-8 to Cercedilla · ~1 hr","desc":"Trails start at the station, including the old Roman road and pine-forest routes toward Siete Picos. Pairs with El Escorial, which is on the same line."},
+        {"id":"t20","name":"Toledo river trail","when":"Free · add to Toledo day","desc":"A path follows the Tagus gorge around the old city, with the best views of the skyline."},
+        {"id":"t21","name":"Segovia river walk","when":"Free · 1–2 hrs","desc":"A loop along the Eresma below the Alcázar, past old mills and monasteries."},
+        {"id":"t22","name":"Aranjuez by bike","when":"C-3 · ~40 min · $3–5","desc":"Rent bikes to cover the huge royal gardens along the river."},
+        {"id":"t23","name":"Ávila walls","when":"Paid · ~1.5 km","desc":"Walk the open section of the ramparts for views over the town and plains."}]}
+    ],
+    "facts": [
+      {"id":"g-fast","label":"Fast food — Spain's McDonald's equivalents","items":[
+        {"id":"f1","name":"TGB (The Good Burger)","when":"Cheeseburger ~$8.50 · fries ~$4.50 · combo $14–18","desc":"Spain's biggest homegrown burger chain, from the same group as 100 Montaditos. Counter service, all over Madrid."},
+        {"id":"f2","name":"Goiko","when":"Burger + fries ~$18–23 (estimate)","desc":"Madrid-born gourmet burger chain, famous for the Kevin Bacon burger. Sit-down and busier; it doesn't publish prices, so this is an estimate."},
+        {"id":"f3","name":"100 Montaditos","when":"About $1–2 per item Wed & Sun","desc":"Tiny sandwiches and beer, ordered on a paper form from 100 fillings. Wednesdays and Sundays are Euromanía, when most items drop to about €1."},
+        {"id":"f4","name":"Telepizza","when":"Individual combo box ~$14","desc":"Spain's answer to Domino's, with about 700 stores nationwide. Pizza, chicken and sides."},
+        {"id":"f5","name":"McDonald's & Burger King","when":"Combo ~$11–13 (estimate)","desc":"Both are everywhere in Madrid if you want something familiar."}]},
+      {"id":"g-rest","label":"Famous restaurants","items":[
+        {"id":"f6","name":"Sobrino de Botín","when":"$45–70 per person · suckling pig ~$36","desc":"Founded in 1725 and listed by Guinness as the world's oldest restaurant. Hemingway wrote about it. Book ahead."},
+        {"id":"f7","name":"Casa Lucio","when":"Huevos rotos $20–25","desc":"Classic La Latina tavern famous for huevos rotos — fried eggs broken over fries, often with ham."},
+        {"id":"f8","name":"Taberna La Bola","when":"Cocido $25–32 per person","desc":"Serving since 1870. Known for cocido madrileño, a chickpea and meat stew slow-cooked in clay pots."},
+        {"id":"f9","name":"Chocolatería San Ginés","when":"Churros & chocolate ~$6–7","desc":"Madrid's churros institution since 1894, open 24 hours. Best after a late night."},
+        {"id":"f10","name":"DiverXO","when":"Tasting menu ~$415 per person","desc":"Dabiz Muñoz's three-Michelin-star restaurant, among the most famous in the world. Books up months ahead."}]},
+      {"id":"g-conc","label":"Concerts (Sep 30 – Oct 11)","items":[
+        {"id":"f11","name":"Placebo","when":"Thu Oct 1 · Movistar Arena","desc":"British alt-rock band."},
+        {"id":"f12","name":"Grupo Niche","when":"Thu Oct 1 · Palacio Vistalegre","desc":"Colombian salsa orchestra."},
+        {"id":"f13","name":"Shakira","when":"Oct 2–4 & Oct 9–11 · Iberdrola Music","desc":"Part of a 12-night Madrid residency. Expect high prices and resale."},
+        {"id":"f14","name":"Evanescence","when":"Fri Oct 2 · Palacio Vistalegre","desc":"American rock band, with Poppy and Nova Twins opening."},
+        {"id":"f15","name":"Guitarricadelafuente","when":"Fri Oct 2 · Movistar Arena","desc":"Spanish singer-songwriter closing his tour in Madrid."},
+        {"id":"f16","name":"Bryant Myers","when":"Sat Oct 3 · Movistar Arena","desc":"Puerto Rican reggaeton and Latin trap artist."},
+        {"id":"f17","name":"Silvio Rodríguez","when":"Sun Oct 4 · Movistar Arena","desc":"Cuban folk legend of the nueva trova movement."}]},
+      {"id":"g-theat","label":"Theater, musicals & opera","items":[
+        {"id":"f18","name":"Wicked","when":"Nuevo Teatro Alcalá · from ~$24","desc":"The Broadway musical, performed in Spanish."},
+        {"id":"f19","name":"Les Misérables","when":"From ~$45","desc":"The classic musical, in Spanish. Highly rated."},
+        {"id":"f20","name":"WAH!","when":"IFEMA Pavilion 2 · from ~$50","desc":"Immersive music show with dinner-and-show seating options."},
+        {"id":"f21","name":"The Play That Goes Wrong","when":"From ~$28","desc":"Slapstick comedy, in Spanish; the physical comedy works without the language."},
+        {"id":"f22","name":"Dear Evan Hansen","when":"From ~$23","desc":"New Spanish-language production of the Broadway musical."},
+        {"id":"f23","name":"El Alma al Aire","when":"From ~$34","desc":"New Spanish musical."},
+        {"id":"f24","name":"Manon Lescaut (opera)","when":"Fri Oct 2, 7:30 PM · Teatro Real · from ~$292","desc":"Puccini at Madrid's royal opera house."}]},
+      {"id":"g-flam","label":"Flamenco (nightly)","items":[
+        {"id":"f25","name":"Café Ziryab","when":"8:30 PM · from ~$23","desc":"Small, intimate flamenco venue."},
+        {"id":"f26","name":"Teatro Flamenco Madrid","when":"5:00 PM · Teatro Alfil · from ~$25","desc":"An earlier show if you want the evening free."},
+        {"id":"f27","name":"Las Carboneras","when":"8:00 PM · from ~$26","desc":"Well-known tablao near Plaza Mayor."},
+        {"id":"f28","name":"Torres Bermejas","when":"From ~$44","desc":"Historic tablao with a Moorish-style room off Gran Vía."}]}
+    ],
+    "free": [
+      {"id":"g-free","label":"","items":[
+        {"id":"c1","name":"Prado Museum","when":"Mon–Sat 6–8 PM · Sun 5–7 PM","desc":"Free last two hours. Normal ticket is about $17."},
+        {"id":"c2","name":"Reina Sofía","when":"Mon, Wed–Sat 7–9 PM · Sun 12:30–2:30 PM","desc":"Closed Tuesdays. Home of Guernica."},
+        {"id":"c3","name":"Thyssen-Bornemisza","when":"Mon 12–4 PM · Sat 9–11 PM","desc":"Permanent collection, no ticket needed during these slots."},
+        {"id":"c4","name":"Always free","when":"Any day","desc":"Retiro Park, Templo de Debod, San Antonio de la Florida (Goya frescoes), Madrid Río, Cervantes' Birthplace in Alcalá, Segovia's aqueduct, Ávila's Four Posts."},
+        {"id":"c5","name":"Commuter trains","when":"No booking","desc":"Cercanías to Alcalá ($3–5), Aranjuez ($3–5) and El Escorial ($5–6)."},
+        {"id":"c6","name":"Book ahead","when":"AVE / Avant","desc":"Toledo ($14–18) and Segovia ($14–16) — weekend mornings sell out."},
+        {"id":"c7","name":"Lunch tip","when":"Daily","desc":"Menú del día at lunch (about $15–18 for 3 courses), free tapas with drinks in Alcalá and some Madrid bars."}]}
+    ]
+  },
+  "notes": {
+    "facts": "Prices are in US dollars at about $1.14 per euro and are approximate. Concert listings come from Songkick and Tourism Madrid as of late September 2026; no major shows were listed for Oct 5–8. Musicals are performed in Spanish.",
+    "free": "Prices are in US dollars at about $1.14 per euro and are approximate. Free-hour times are from each museum's site as of September 2026; check again the week you go. Free slots get long lines, so arrive 20–30 minutes early."
+  }
+}
+</script>
+
+<script id="app">
+(function () {
+  var RESET = ":root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}";
+  var SRC = {
+    title: document.querySelector("title").outerHTML,
+    links: Array.prototype.map.call(document.querySelectorAll('link[rel="preconnect"], #font-link'), function (l) { return l.outerHTML; }).join(""),
+    style: document.getElementById("app-style").outerHTML,
+    root: document.getElementById("app-root").outerHTML,
+    sheet: document.getElementById("sheetBg").outerHTML,
+    app: document.getElementById("app").textContent
+  };
+  var state = JSON.parse(document.getElementById("plan-data").textContent);
+  var ui = { tab: state.pages[0] ? state.pages[0].id : null, dayFilter: "all", listFilter: {}, editing: false };
+  try { var s = JSON.parse(sessionStorage.getItem("planner-ui") || "null"); if (s) { ui.tab = s.tab || ui.tab; ui.editing = !!s.editing; } } catch (e) {}
+  var artifact = null, readOnly = false, saving = false;
+
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var uid = function (p) { return p + Math.random().toString(36).slice(2, 8); };
+  var typeLabel = { flight: "Flight", travel: "Arrival", explore: "Madrid", daytrip: "Day trip" };
+  var kindOfDay = function (x) { return x.type === "daytrip" ? "daytrip" : x.type === "flight" ? "flight" : "city"; };
+
+  function buildDoc() {
+    var json = JSON.stringify(state, null, 1).replace(/</g, "\\u003c");
+    return "<!doctype html><html><head><meta charset=utf8><meta name=viewport content=\"width=device-width,initial-scale=1,viewport-fit=cover\"><style>" + RESET + "</style></head><body>" +
+      SRC.title + "\n" + SRC.links + "\n" + SRC.style + "\n\n" + SRC.root + "\n\n" + SRC.sheet + "\n\n" +
+      "<script type=\"application/json\" id=\"plan-data\">\n" + json + "\n<\/script>\n\n<script id=\"app\">" + SRC.app + "<\/script>\n</body></html>";
+  }
+
+  function remember() { try { sessionStorage.setItem("planner-ui", JSON.stringify({ tab: ui.tab, editing: ui.editing })); } catch (e) {} }
+
+  /* Saving: inside Claude the page saves itself; on GitHub Pages it saves to this
+     browser, and also to a Google Sheet when SYNC_URL is set (see README). */
+  var SYNC_URL = "";
+  var LOCAL_KEY = "spain-planner-v1";
+  var inClaude = !!(window.claude && window.claude.use);
+
+  async function save() {
+    render();
+    if (!inClaude) { await saveStandalone(); return; }
+    if (!artifact || readOnly) return;
+    saving = true; showSaving(true); remember();
+    try { await artifact.publish(buildDoc()); }
+    catch (err) {
+      saving = false; showSaving(false);
+      var code = err && err.code;
+      if (code === "conflict") return;
+      if (code === "not_writer" || code === "not_granted" || code === "not_declared" || code === "capability_disabled" || code === "consent_required") { readOnly = true; }
+      setBanner(readOnly ? "This view is read-only, so changes can't be saved." : "Couldn't save that change. It shows here until you reload; try again in a moment.");
+    }
+  }
+  async function saveStandalone() {
+    try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch (e) {}
+    if (!SYNC_URL) { flash("Saved on this device"); return; }
+    saving = true; showSaving(true);
+    try {
+      var res = await fetch(SYNC_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ state: state }) });
+      var out = await res.json();
+      if (!out || !out.ok) throw new Error("bad");
+      setBanner(""); saving = false; showSaving(false); flash("Saved");
+    } catch (e) {
+      saving = false; showSaving(false);
+      setBanner("Saved on this device, but couldn't reach the shared sheet. It will sync on your next save.");
+    }
+  }
+  function flash(msg) {
+    var el = document.createElement("div"); el.className = "saving"; el.textContent = msg; document.body.appendChild(el);
+    setTimeout(function () { el.remove(); }, 1600);
+  }
+  async function loadStandalone() {
+    try { var local = JSON.parse(localStorage.getItem(LOCAL_KEY) || "null"); if (local && local.pages) { state = local; render(); } } catch (e) {}
+    if (!SYNC_URL) return;
+    try {
+      var res = await fetch(SYNC_URL); var out = await res.json();
+      if (out && out.state && out.state.pages) { state = out.state; try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch (e) {} render(); }
+    } catch (e) { setBanner("Couldn't reach the shared sheet. Showing the copy saved on this device."); }
+  }
+  function showSaving(on) {
+    var el = document.getElementById("savingChip");
+    if (on && !el) { el = document.createElement("div"); el.id = "savingChip"; el.className = "saving"; el.textContent = "Saving…"; document.body.appendChild(el); }
+    if (!on && el) el.remove();
+  }
+  function setBanner(msg) { document.getElementById("banner").innerHTML = msg ? '<div class="banner">' + esc(msg) + "</div>" : ""; }
+
+  /* ---------- render ---------- */
+  function render() {
+    var root = document.getElementById("app-root");
+    root.classList.toggle("editing", ui.editing);
+    var t = document.getElementById("editToggle");
+    t.setAttribute("aria-pressed", ui.editing ? "true" : "false");
+    t.textContent = ui.editing ? "Done" : "Edit";
+    if (!state.pages.some(function (p) { return p.id === ui.tab; })) ui.tab = state.pages[0] ? state.pages[0].id : null;
+    document.getElementById("tabs").innerHTML = state.pages.map(function (p) {
+      return '<button class="tab' + (p.id === ui.tab ? " active" : "") + '" data-tab="' + esc(p.id) + '">' + esc(p.label) + "</button>";
+    }).join("") + (ui.editing ? '<button class="tab" data-act="add-page">+ Page</button>' : "");
+    var page = state.pages.filter(function (p) { return p.id === ui.tab; })[0];
+    var html = "";
+    if (!page) html = '<div class="empty">No pages left. Tap Edit, then + Page to add one.</div>';
+    else if (page.kind === "days") html = renderDays();
+    else html = renderList(page.id);
+    if (page) html += '<div class="page-tools"><span>Page: ' + esc(page.label) + '</span><button class="mini" data-act="rename-page">Rename page</button><button class="mini danger" data-act="delete-page">Delete page</button></div>';
+    document.getElementById("panel").innerHTML = html;
+  }
+
+  function renderDays() {
+    var days = state.days;
+    var trips = days.filter(function (x) { return x.type === "daytrip"; }).length;
+    var out = '<div class="summary"><div class="stat"><span class="n">' + days.length + '</span><span class="l">days</span></div>' +
+      '<div class="stat"><span class="n">' + trips + '</span><span class="l">day trips by train</span></div>' +
+      '<div class="stat"><span class="n">~$110</span><span class="l">all day-trip trains, per person</span></div></div>';
+    out += '<div class="chips">' + [["all", "All"], ["city", "Madrid days"], ["daytrip", "Day trips"]].map(function (c) {
+      return '<button class="chip' + (ui.dayFilter === c[0] ? " active" : "") + '" data-dayfilter="' + c[0] + '">' + c[1] + "</button>";
+    }).join("") + '<button class="add-btn" data-act="add-day">+ Add day</button></div>';
+    var shown = days.filter(function (x) { return ui.dayFilter === "all" || kindOfDay(x) === ui.dayFilter; });
+    if (!shown.length) out += '<div class="empty">No days here.</div>';
+    out += shown.map(dayCard).join("");
+    return out;
+  }
+
+  function dayCard(x) {
+    var f = x.flight ? '<div class="flight-box"><div><div class="big">' + esc(x.flight.fromT) + '</div><div class="code">' + esc(x.flight.from) + '</div></div><div class="mid">✈<br>' + esc(x.flight.note) + '</div><div class="r"><div class="big">' + esc(x.flight.toT) + '</div><div class="code">' + esc(x.flight.to) + "</div></div></div>" : "";
+    var sched = (x.sched || []).map(function (r) { return '<li><span class="t">' + esc(r[0]) + "</span><span>" + esc(r[1]) + "</span></li>"; }).join("");
+    var lbl = { book: "Book: ", free: "", ok: "" };
+    var flags = (x.flags || []).length ? '<div class="flags">' + x.flags.map(function (r) { return '<span class="flag ' + esc(r[0]) + '">' + (lbl[r[0]] || "") + esc(r[1]) + "</span>"; }).join("") + "</div>" : "";
+    return '<div class="card' + (x.type === "flight" ? " flight" : "") + '"><div class="stub"><div class="dow">' + esc(x.dow) + '</div><div class="day">' + esc(x.d) + '</div><div class="mon">' + esc(x.m) + '</div></div><div class="body">' +
+      '<div class="row1"><div class="title">' + esc(x.title) + '</div><span class="type-tag type-' + esc(x.type) + '">' + esc(typeLabel[x.type] || x.type) + "</span></div>" +
+      '<div class="meta">' + esc(x.meta) + "</div>" + f + '<ul class="sched">' + sched + "</ul>" + flags +
+      '<div class="edit-bar"><button class="mini" data-act="edit-day" data-id="' + esc(x.id) + '">Edit</button><button class="mini danger" data-act="del-day" data-id="' + esc(x.id) + '">Delete</button></div></div></div>';
+  }
+
+  function renderList(pid) {
+    var groups = state.lists[pid] || (state.lists[pid] = []);
+    var labelled = groups.filter(function (g) { return g.label; });
+    var cur = ui.listFilter[pid] || "all";
+    var out = "";
+    if (labelled.length > 1) {
+      out += '<div class="chips"><button class="chip' + (cur === "all" ? " active" : "") + '" data-listfilter="all">All</button>' +
+        labelled.map(function (g) { return '<button class="chip' + (cur === g.id ? " active" : "") + '" data-listfilter="' + esc(g.id) + '">' + esc(g.label) + "</button>"; }).join("") + "</div>";
+    }
+    var shown = groups.filter(function (g) { return cur === "all" || g.id === cur; });
+    out += shown.map(function (g) {
+      var head = '<div class="group-label"><span>' + esc(g.label || "") + '</span><span style="display:flex;gap:6px">' +
+        '<button class="add-btn" data-act="add-item" data-group="' + esc(g.id) + '">+ Add</button>' +
+        (g.label ? '<button class="add-btn" data-act="edit-group" data-group="' + esc(g.id) + '">Section</button>' : "") + "</span></div>";
+      var items = g.items.length ? g.items.map(function (it) {
+        return '<div class="item"><div class="item-head"><span>' + esc(it.name) + '</span><span class="when">' + esc(it.when) + '</span></div>' +
+          (it.desc ? '<div class="item-sub">' + esc(it.desc) + "</div>" : "") +
+          '<div class="edit-bar"><button class="mini" data-act="edit-item" data-group="' + esc(g.id) + '" data-id="' + esc(it.id) + '">Edit</button><button class="mini danger" data-act="del-item" data-group="' + esc(g.id) + '" data-id="' + esc(it.id) + '">Delete</button></div></div>';
+      }).join("") : '<div class="empty">Nothing here yet.</div>';
+      return head + items;
+    }).join("");
+    if (!groups.length) out += '<div class="empty">This page is empty.</div>';
+    out += '<div style="margin-top:14px"><button class="add-btn" data-act="add-group">+ Add section</button></div>';
+    if (state.notes && state.notes[pid]) out += '<p class="note">' + esc(state.notes[pid]) + "</p>";
+    return out;
+  }
+
+  /* ---------- sheet ---------- */
+  var sheetSubmit = null;
+  function openSheet(title, fieldsHtml, onSubmit, onDelete) {
+    document.getElementById("sheetTitle").textContent = title;
+    document.getElementById("sheetForm").innerHTML = fieldsHtml +
+      '<div class="actions"><button type="submit" class="btn btn-primary">Save</button><button type="button" class="btn btn-ghost" data-sheet="cancel">Cancel</button>' +
+      (onDelete ? '<button type="button" class="btn btn-danger" data-sheet="delete">Delete</button>' : "") + "</div>" +
+      '<div class="confirm" id="errBox"></div><div class="confirm" id="confirmBox">Delete this? <button type="button" class="mini danger" data-sheet="confirm">Yes, delete</button></div>';
+    sheetSubmit = { submit: onSubmit, del: onDelete };
+    document.getElementById("sheetBg").classList.add("open");
+    var first = document.querySelector("#sheetForm input, #sheetForm textarea");
+    if (first) first.focus();
+  }
+  function closeSheet() { document.getElementById("sheetBg").classList.remove("open"); sheetSubmit = null; }
+  var field = function (id, label, value, opts) {
+    opts = opts || {};
+    var input = opts.area ? '<textarea id="' + id + '" rows="' + (opts.rows || 4) + '">' + esc(value) + "</textarea>" :
+      opts.select ? '<select id="' + id + '">' + opts.select.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === value ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>" :
+      '<input id="' + id + '" type="text" value="' + esc(value) + '">';
+    return '<div class="field"><label for="' + id + '">' + label + "</label>" + input + (opts.hint ? '<div class="hint">' + opts.hint + "</div>" : "") + "</div>";
+  };
+  var val = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ""; };
+
+  function findItem(gid, id) {
+    var g = state.lists[ui.tab].filter(function (x) { return x.id === gid; })[0];
+    return { g: g, it: g && id ? g.items.filter(function (x) { return x.id === id; })[0] : null };
+  }
+
+  function editItem(gid, id) {
+    var r = findItem(gid, id), it = r.it || { name: "", when: "", desc: "" };
+    openSheet(r.it ? "Edit entry" : "Add entry",
+      field("f-name", "Name", it.name) + field("f-when", "Details (time, price, place)", it.when) + field("f-desc", "Description", it.desc, { area: true }),
+      function () {
+        if (!val("f-name")) return "Add a name first.";
+        var data = { name: val("f-name"), when: val("f-when"), desc: val("f-desc") };
+        if (r.it) Object.assign(r.it, data); else r.g.items.push(Object.assign({ id: uid("i") }, data));
+      },
+      r.it ? function () { r.g.items = r.g.items.filter(function (x) { return x.id !== id; }); } : null);
+  }
+
+  function editGroup(gid) {
+    var list = state.lists[ui.tab];
+    var g = gid ? list.filter(function (x) { return x.id === gid; })[0] : null;
+    openSheet(g ? "Edit section" : "Add section", field("f-glabel", "Section name", g ? g.label : ""),
+      function () {
+        if (!val("f-glabel")) return "Add a section name first.";
+        if (g) g.label = val("f-glabel"); else list.push({ id: uid("g"), label: val("f-glabel"), items: [] });
+      },
+      g ? function () { state.lists[ui.tab] = list.filter(function (x) { return x.id !== gid; }); } : null);
+  }
+
+  function editDay(id) {
+    var x = id ? state.days.filter(function (d) { return d.id === id; })[0] : null;
+    var d = x || { dow: "", d: "", m: "OCT", type: "explore", title: "", meta: "", sched: [], flags: [] };
+    var schedText = (d.sched || []).map(function (r) { return r[0] + " | " + r[1]; }).join("\n");
+    var flagText = (d.flags || []).map(function (r) { return r[0] + " | " + r[1]; }).join("\n");
+    openSheet(x ? "Edit day" : "Add day",
+      '<div class="row3">' + field("f-dow", "Weekday", d.dow) + field("f-d", "Day", d.d) + field("f-m", "Month", d.m) + "</div>" +
+      field("f-title", "Title", d.title) + field("f-meta", "Subtitle", d.meta) +
+      field("f-type", "Type", d.type, { select: [["explore", "Madrid"], ["daytrip", "Day trip"], ["travel", "Arrival"], ["flight", "Flight"]] }) +
+      field("f-sched", "Schedule", schedText, { area: true, rows: 6, hint: "One per line: time | activity" }) +
+      field("f-flags", "Tags", flagText, { area: true, rows: 2, hint: "One per line: book | text, free | text, or ok | text" }),
+      function () {
+        if (!val("f-title")) return "Add a title first.";
+        var parse = function (t) { return t.split("\n").map(function (l) { var i = l.indexOf("|"); return i < 0 ? ["", l.trim()] : [l.slice(0, i).trim(), l.slice(i + 1).trim()]; }).filter(function (r) { return r[1]; }); };
+        var data = { dow: val("f-dow"), d: val("f-d"), m: val("f-m").toUpperCase(), title: val("f-title"), meta: val("f-meta"), type: val("f-type"), sched: parse(val("f-sched")), flags: parse(val("f-flags")) };
+        if (x) Object.assign(x, data); else state.days.push(Object.assign({ id: uid("d") }, data));
+      },
+      x ? function () { state.days = state.days.filter(function (dd) { return dd.id !== id; }); } : null);
+  }
+
+  function editPage(isNew) {
+    var p = isNew ? null : state.pages.filter(function (pp) { return pp.id === ui.tab; })[0];
+    openSheet(isNew ? "Add page" : "Rename page", field("f-plabel", "Page name", p ? p.label : ""),
+      function () {
+        if (!val("f-plabel")) return "Add a page name first.";
+        if (p) p.label = val("f-plabel");
+        else { var id = uid("p"); state.pages.push({ id: id, label: val("f-plabel"), kind: "list" }); state.lists[id] = [{ id: uid("g"), label: "", items: [] }]; ui.tab = id; }
+      }, null);
+  }
+
+  function deletePage() {
+    var p = state.pages.filter(function (pp) { return pp.id === ui.tab; })[0];
+    if (!p) return;
+    openSheet("Delete page", '<p style="font-size:14px;line-height:1.5;margin:0">Delete the “' + esc(p.label) + '” page and everything on it? This can’t be undone.</p>',
+      null,
+      function () {
+        state.pages = state.pages.filter(function (pp) { return pp.id !== p.id; });
+        if (p.kind === "list") delete state.lists[p.id]; else state.days = [];
+        ui.tab = state.pages[0] ? state.pages[0].id : null;
+      });
+    document.querySelector('#sheetForm [type="submit"]').remove();
+  }
+
+  /* ---------- events ---------- */
+  document.getElementById("editToggle").addEventListener("click", function () { ui.editing = !ui.editing; remember(); render(); });
+  document.getElementById("app-root").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b || saving) return;
+    if (b.dataset.tab) { ui.tab = b.dataset.tab; remember(); render(); return; }
+    if (b.dataset.dayfilter) { ui.dayFilter = b.dataset.dayfilter; render(); return; }
+    if (b.dataset.listfilter) { ui.listFilter[ui.tab] = b.dataset.listfilter; render(); return; }
+    var a = b.dataset.act;
+    if (a === "edit-day") editDay(b.dataset.id);
+    else if (a === "add-day") editDay(null);
+    else if (a === "del-day") { var d = state.days.filter(function (x) { return x.id === b.dataset.id; })[0]; confirmDelete("Delete " + (d ? d.title : "this day") + "?", function () { state.days = state.days.filter(function (x) { return x.id !== b.dataset.id; }); }); }
+    else if (a === "edit-item") editItem(b.dataset.group, b.dataset.id);
+    else if (a === "add-item") editItem(b.dataset.group, null);
+    else if (a === "del-item") { var r = findItem(b.dataset.group, b.dataset.id); confirmDelete("Delete " + (r.it ? r.it.name : "this entry") + "?", function () { r.g.items = r.g.items.filter(function (x) { return x.id !== b.dataset.id; }); }); }
+    else if (a === "edit-group") editGroup(b.dataset.group);
+    else if (a === "add-group") editGroup(null);
+    else if (a === "add-page") editPage(true);
+    else if (a === "rename-page") editPage(false);
+    else if (a === "delete-page") deletePage();
+  });
+  function confirmDelete(msg, fn) {
+    openSheet("Delete", '<p style="font-size:14px;line-height:1.5;margin:0">' + esc(msg) + " This can’t be undone.</p>", null, fn);
+    document.querySelector('#sheetForm [type="submit"]').remove();
+  }
+  document.getElementById("sheetForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!sheetSubmit || !sheetSubmit.submit) return;
+    var err = sheetSubmit.submit();
+    if (err) { var c = document.getElementById("errBox"); c.textContent = err; c.classList.add("show"); return; }
+    closeSheet(); save();
+  });
+  document.getElementById("sheetForm").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-sheet]"); if (!b) return;
+    if (b.dataset.sheet === "cancel") closeSheet();
+    else if (b.dataset.sheet === "delete") document.getElementById("confirmBox").classList.add("show");
+    else if (b.dataset.sheet === "confirm" && sheetSubmit && sheetSubmit.del) { sheetSubmit.del(); closeSheet(); save(); }
+  });
+  document.getElementById("sheetBg").addEventListener("click", function (e) { if (e.target.id === "sheetBg") closeSheet(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
+
+  render();
+
+  if (inClaude) {
+    window.claude.use("artifact").then(function (ns) {
+      artifact = ns;
+      if (!ns) setBanner("Saving isn't available in this view. Edits last until you reload.");
+    }).catch(function () { artifact = null; });
+  } else {
+    loadStandalone();
+  }
+})();
+</script>
+
+</body></html>
